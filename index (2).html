@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sugar Rue — Custom Order</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0E0B08;
+      --surface: #1A1410;
+      --surface2: #221C16;
+      --border: #2E2520;
+      --border-hover: #5C4A38;
+      --text: #F0E8DC;
+      --muted: #8A7A6A;
+      --gold: #C8963E;
+      --gold-light: #E8B86D;
+      --gold-pale: #F5E4C3;
+      --gold-dim: #3D2E18;
+      --rose: #C4726A;
+      --radius: 14px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(ellipse at 20% 0%, rgba(200,150,62,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 100%, rgba(196,114,106,0.04) 0%, transparent 50%);
+    }
+
+    /* NAV */
+    nav {
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(14,11,8,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--gold-light);
+      letter-spacing: 0.04em;
+    }
+    .logo span {
+      font-weight: 400;
+      font-style: italic;
+      color: var(--muted);
+      font-size: 13px;
+      margin-left: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .nav-tag {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 2rem;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.25rem;
+      padding: 4px 14px;
+      border: 1px solid var(--gold-dim);
+      border-radius: 20px;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(38px, 6vw, 58px);
+      font-weight: 500;
+      line-height: 1.1;
+      color: var(--gold-pale);
+      letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .hero p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    /* DIVIDER */
+    .divider {
+      max-width: 640px;
+      margin: 2rem auto;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0 1.5rem;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+    .divider-icon { color: var(--gold); font-size: 14px; }
+
+    /* FORM CONTAINER */
+    .form-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 1.5rem 6rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--gold-light);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 18px;
+      background: var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .field { margin-bottom: 1.1rem; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    input::placeholder, textarea::placeholder { color: #4A3F35; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(200,150,62,0.12);
+    }
+    select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A7A6A' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; }
+    select option { background: #1A1410; }
+    textarea { resize: vertical; min-height: 110px; line-height: 1.6; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
+
+    /* other occasion field */
+    #otherOccasionField { display: none; margin-top: 10px; }
+
+    /* BUDGET PILLS */
+    .budget-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .budget-pill {
+      padding: 7px 14px;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .budget-pill:hover { border-color: var(--border-hover); color: var(--text); }
+    .budget-pill.active {
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      color: var(--gold-light);
+    }
+
+    /* SUBMIT */
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: var(--gold);
+      color: #1A1000;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: background 0.15s, transform 0.1s;
+      margin-top: 0.5rem;
+    }
+    .submit-btn:hover { background: var(--gold-light); }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .form-note {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.6;
+    }
+
+    /* STATUS */
+    .status-msg {
+      display: none;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      margin-top: 10px;
+    }
+    .status-msg.ok { background: rgba(100,180,120,0.1); border: 1px solid rgba(100,180,120,0.25); color: #7DC99A; display: block; }
+    .status-msg.fail { background: rgba(196,114,106,0.1); border: 1px solid rgba(196,114,106,0.25); color: var(--rose); display: block; }
+
+    /* SUCCESS */
+    .success-box {
+      display: none;
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+    .success-icon {
+      font-size: 52px;
+      margin-bottom: 1.5rem;
+    }
+    .success-box h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 500;
+      color: var(--gold-light);
+      margin-bottom: 0.75rem;
+    }
+    .success-box p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 380px;
+      margin: 0 auto;
+    }
+    .ref-pill {
+      display: inline-block;
+      margin-top: 1.25rem;
+      padding: 6px 18px;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 11px;
+      color: #3D3530;
+      border-top: 1px solid var(--border);
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Sugar Rue <span>Patisserie & Bakery</span></div>
+  <div class="nav-tag">Custom Orders · Mumbai</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Bespoke Creations</div>
+  <h1>Every detail,<br><em>crafted for you.</em></h1>
+  <p>Tell us about your dream order and we'll bring it to life. We'll get back to you within 24 hours to confirm details.</p>
+</div>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-icon">✦</div>
+  <div class="divider-line"></div>
+</div>
+
+<div class="form-wrap">
+  <div id="mainForm">
+
+    <!-- Contact -->
+    <div class="card">
+      <div class="card-title">Your details</div>
+      <div class="row">
+        <div class="field">
+          <label>Full name</label>
+          <input type="text" id="name" placeholder="Priya Sharma">
+        </div>
+        <div class="field">
+          <label>WhatsApp number</label>
+          <input type="tel" id="whatsapp" placeholder="+91 98765 43210">
+        </div>
+      </div>
+      <div class="field">
+        <label>Delivery address</label>
+        <input type="text" id="address" placeholder="Flat 4B, Linking Road, Bandra West, Mumbai">
+      </div>
+    </div>
+
+    <!-- Order details -->
+    <div class="card">
+      <div class="card-title">Order details</div>
+
+      <div class="row">
+        <div class="field">
+          <label>Occasion</label>
+          <select id="occasion" onchange="toggleOther()">
+            <option value="">Select occasion</option>
+            <option value="Birthday">Birthday</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Anniversary">Anniversary</option>
+            <option value="Corporate Event">Corporate Event</option>
+            <option value="Grazing Table">Grazing Table</option>
+            <option value="Other">Other</option>
+          </select>
+          <div id="otherOccasionField">
+            <input type="text" id="otherOccasion" placeholder="Describe your occasion">
+          </div>
+        </div>
+        <div class="field">
+          <label>Date needed</label>
+          <input type="date" id="dateNeeded">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Number of servings</label>
+        <select id="servings">
+          <option value="">Select servings</option>
+          <option value="1–10">1–10 people</option>
+          <option value="10–25">10–25 people</option>
+          <option value="25–50">25–50 people</option>
+          <option value="50–100">50–100 people</option>
+          <option value="100+">100+ people</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Budget</label>
+        <div class="budget-pills">
+          <button class="budget-pill" onclick="selectBudget(this, 'Under ₹2,000')">Under ₹2,000</button>
+          <button class="budget-pill" onclick="selectBudget(this, '₹2,000–5,000')">₹2,000–5,000</button>
+          <button class="budget-pill" onclick="selectBudget(this, '₹5,000–10,000')">₹5,000–10,000</button>
+          <button class="budget-pill" onclick="selectBudget(this, '₹10,000–20,000')">₹10,000–20,000</button>
+          <button class="budget-pill" onclick="selectBudget(this, '₹20,000+')">₹20,000+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom order description -->
+    <div class="card">
+      <div class="card-title">Your custom order</div>
+      <div class="field">
+        <label>Describe what you have in mind</label>
+        <textarea id="customOrder" placeholder="Tell us about your vision — design, theme, colours, flavours, any inspiration images you have in mind. The more detail, the better we can bring it to life."></textarea>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <button class="submit-btn" id="submitBtn" onclick="submitOrder()">Send my order request →</button>
+    <div id="statusMsg" class="status-msg"></div>
+    <p class="form-note">We'll reach out on WhatsApp within 24 hours to confirm your order details.</p>
+
+  </div>
+
+  <!-- Success -->
+  <div class="success-box" id="successBox">
+    <div class="success-icon">🎂</div>
+    <h2>Request received!</h2>
+    <p id="successMsg"></p>
+    <div class="ref-pill" id="refId"></div>
+    <br><br>
+    <button class="submit-btn" style="max-width:280px;margin:0 auto;display:block" onclick="resetForm()">Place another order</button>
+  </div>
+</div>
+
+<footer>© 2025 SUGAR RUE · PATISSERIE & BAKERY · BANDRA EAST, MUMBAI</footer>
+
+<script>
+  const WEBHOOK_URL = 'https://hook.eu1.make.com/lm2xt8b9m1e39kb0u1mvalb9mslxssw4';
+
+  let selectedBudget = '';
+
+  function selectBudget(el, value) {
+    document.querySelectorAll('.budget-pill').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    selectedBudget = value;
+  }
+
+  function toggleOther() {
+    const val = document.getElementById('occasion').value;
+    document.getElementById('otherOccasionField').style.display = val === 'Other' ? 'block' : 'none';
+  }
+
+  async function submitOrder() {
+    const name = document.getElementById('name').value.trim();
+    const whatsapp = document.getElementById('whatsapp').value.trim();
+    const address = document.getElementById('address').value.trim();
+    const occasionRaw = document.getElementById('occasion').value;
+    const occasion = occasionRaw === 'Other' ? document.getElementById('otherOccasion').value.trim() : occasionRaw;
+    const dateNeeded = document.getElementById('dateNeeded').value;
+    const servings = document.getElementById('servings').value;
+    const customOrder = document.getElementById('customOrder').value.trim();
+
+    if (!name || !whatsapp || !occasion || !dateNeeded || !customOrder) {
+      const s = document.getElementById('statusMsg');
+      s.textContent = 'Please fill in all required fields.';
+      s.className = 'status-msg fail';
+      return;
+    }
+
+    const refId = 'SR-' + Date.now().toString().slice(-6);
+    const orderData = {
+      ref_id: refId,
+      timestamp: new Date().toISOString(),
+      name,
+      whatsapp,
+      address,
+      occasion,
+      date_needed: dateNeeded,
+      servings,
+      budget: selectedBudget,
+      custom_order: customOrder
+    };
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    try {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+    } catch (e) {}
+
+    document.getElementById('mainForm').style.display = 'none';
+    const sb = document.getElementById('successBox');
+    sb.style.display = 'block';
+    document.getElementById('refId').textContent = refId;
+    document.getElementById('successMsg').innerHTML =
+      `Thank you, <strong>${name}</strong>! We've received your order request and will reach out on WhatsApp within 24 hours to confirm everything.`;
+  }
+
+  function resetForm() {
+    document.getElementById('mainForm').style.display = 'block';
+    document.getElementById('successBox').style.display = 'none';
+    document.getElementById('statusMsg').className = 'status-msg';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = 'Send my order request →';
+    ['name','whatsapp','address','otherOccasion','customOrder'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('occasion').value = '';
+    document.getElementById('servings').value = '';
+    document.getElementById('dateNeeded').value = '';
+    document.querySelectorAll('.budget-pill').forEach(p => p.classList.remove('active'));
+    selectedBudget = '';
+    toggleOther();
+  }
+
+  // Set min date to tomorrow
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('dateNeeded').min = tomorrow.toISOString().split('T')[0];
+</script>
+</body>
+</html>
